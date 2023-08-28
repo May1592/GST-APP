@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+GST_SCHEMA : gst
+spring:
+  profile:
+    active: development
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema : ${GST_SCHEMA:GST}
+        jdbc:
+          time_zone: UTC
+    hibernate:
+      ddl-auto: validate
+      naming-strategy : org.hibernate.cfg.ImprovedNamingStrategy
+  datasource:
+      platform: postgres
+      url: jdbc:postgresql://localhost:5432/postgres
+      driverClassName: org.postgresql.Driver
+  flyway:
+    enabled: ${FLYWAY_ENABLED:true}
+    locations : classpath:db/migration
+    baseline-on-migration : true
+    baselineVersion: ${FLYWAY_BASE:0.0.0}
+    ignoreMissingMigrations: true
+    schemas : ${GST_SCHEMA:GST}
+
+security :
+  ignored : /**
+  basic:
+    enable: false
+management:
+  ednpoint:
+    web:
+      exposure:
+        include: "*"
+
